@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+WORKDIR /app
+
+# Instalar ferramentas do EF Core globalmente
+RUN dotnet tool install --global dotnet-ef --version 8.0.11
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+# Copiar e restaurar dependências
+COPY *.csproj ./
+RUN dotnet restore
+
+COPY . ./
+
+EXPOSE 5210
+
+# Rodar migrations e depois a aplicação em modo watch
+CMD dotnet ef database update && dotnet watch run --urls "http://0.0.0.0:5210"

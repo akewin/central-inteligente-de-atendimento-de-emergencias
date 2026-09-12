@@ -1,0 +1,37 @@
+services:
+  api:
+    image: therermz/admin-boiler-plate:staging
+    env_file:
+      - ./Api/.env
+    environment:
+      - ASPNETCORE_URLS=http://+:5210
+    ports:
+      - '5210:5210'
+    restart: unless-stopped
+    stop_grace_period: 10s
+    security_opt:
+      - apparmor=unconfined
+    networks:
+      - admin-panel-network
+
+  webapp:
+    build:
+      context: ./WebApp
+      dockerfile: Dockerfile    # Usando o Dockerfile existente
+    container_name: admin-panel-webapp
+    depends_on:
+      - api
+    ports:
+      - '5173:5173'
+    environment:
+      - VITE_API_BASE_URL=http://api:5210/api
+    restart: unless-stopped
+    stop_grace_period: 10s
+    security_opt:
+      - apparmor=unconfined
+    networks:
+      - admin-panel-network
+
+networks:
+  admin-panel-network:
+    driver: bridge

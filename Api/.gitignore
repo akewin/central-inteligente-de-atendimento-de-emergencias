@@ -1,0 +1,48 @@
+# Build results
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+
+# Rider / JetBrains
+.idea/
+
+# Mac / Linux system files
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# NuGet packages
+*.nupkg
+*.snupkg
+# Uncomment if you have local package caches you don’t want to commit
+# packages/
+# *.nuget/
+
+# Publish outputs
+publish/
+*.Publish.xml
+
+# Coverage reports
+coverage/
+
+# Environment variables
+.env*
+!.env.example

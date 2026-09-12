@@ -1,0 +1,32 @@
+# .NET
+**/bin/
+**/obj/
+**/out/
+
+# Frontend
+**/node_modules/
+**/dist/
+
+# Environment variables
+**/.env*
+!**/.env.example
+
+# IDE
+.vs/
+.idea/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# System files
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Logs and coverage
+*.log
+logs/
+coverage/

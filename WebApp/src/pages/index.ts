@@ -1,0 +1,15 @@
+export { default as DashBoard } from './DashBoard';
+export { default as Login } from './Login';
+export { default as NotFound } from './NotFound';
+export { default as PasswordReset } from './PasswordReset';
+export { default as Reports } from './Reports';
+export { default as Resources } from './Resources';
+export { default as UnauthorizedAccess } from './UnauthorizedAccess';
+export { default as Users } from './Users';
+export { default as OccurrenceDetails } from './OccurrenceDetails';
+export { default as Occurrences } from './Occurrences';
+export { default as NewOccurrence } from './NewOccurrence';
+export { default as Units } from './Units';
+export { default as MyDispatches } from './MyDispatches';
+export { default as Hospitals } from './Hospitals';
+export { default as HospitalReceptions } from './HospitalReceptions';

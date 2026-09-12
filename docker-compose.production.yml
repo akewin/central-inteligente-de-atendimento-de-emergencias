@@ -1,0 +1,19 @@
+services:
+  api:
+    image: therermz/admin-boiler-plate:latest
+    env_file:
+      - ./Api/.env
+    environment:
+      - ASPNETCORE_URLS=http://+:5210
+    ports:
+      - '5210:5210'
+    restart: unless-stopped
+    stop_grace_period: 10s
+    security_opt:
+      - apparmor=unconfined
+    networks:
+      - admin-panel-network
+
+networks:
+  admin-panel-network:
+    driver: bridge
