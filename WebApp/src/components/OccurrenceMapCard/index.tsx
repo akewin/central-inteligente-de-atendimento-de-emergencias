@@ -16,14 +16,13 @@ import 'leaflet/dist/leaflet.css';
 import type { OccurrenceMapData, OccurrenceMapHospital } from '../../interfaces';
 import { getErrorMessage } from '../../helpers';
 import { getOccurrenceMap } from '../../services';
+import { mapTileUrl, mapTileAttribution } from '../../helpers/mapTiles';
 
 interface OccurrenceMapCardProps {
   occurrenceId: number;
   refreshKey: string;
   compact?: boolean;
 }
-
-const tileUrl = import.meta.env.VITE_MAP_TILE_URL || 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
 
 function formatKm(value: number) {
   return `${value.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 2 })} km`;
@@ -81,9 +80,9 @@ export default function OccurrenceMapCard({ occurrenceId, refreshKey, compact = 
     if (!data || !mapElementRef.current) return;
 
     const map = L.map(mapElementRef.current, { scrollWheelZoom: false, zoomControl: true });
-    L.tileLayer(tileUrl, {
+    L.tileLayer(mapTileUrl, {
       maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+      attribution: mapTileAttribution,
     }).addTo(map);
 
     const bounds: L.LatLngExpression[] = [];

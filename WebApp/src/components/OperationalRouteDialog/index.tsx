@@ -3,18 +3,20 @@ import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, 
 import * as L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { OperationalRoute } from '../../interfaces';
-
-const tileUrl = import.meta.env.VITE_MAP_TILE_URL || 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+import { mapTileUrl, mapTileAttribution } from '../../helpers/mapTiles';
 
 export default function OperationalRouteDialog({ route, open, onClose }: { route: OperationalRoute | null; open: boolean; onClose: () => void }) {
   const [mapElement, setMapElement] = useState<HTMLDivElement | null>(null);
+  const sameLocation = !!route
+    && route.origin.latitude === route.destination.latitude
+    && route.origin.longitude === route.destination.longitude;
 
   useEffect(() => {
     if (!open || !route || !mapElement) return;
     let map: L.Map | null = null;
     const mountTimer = window.setTimeout(() => {
       map = L.map(mapElement, { scrollWheelZoom: false });
-      L.tileLayer(tileUrl, { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors &copy; CARTO' }).addTo(map);
+      L.tileLayer(mapTileUrl, { maxZoom: 19, attribution: mapTileAttribution }).addTo(map);
       const geometry: L.LatLngExpression[] = route.geometry.map(point => [point.latitude, point.longitude]);
       const boundsPoints: L.LatLngExpression[] = geometry.length > 0
         ? geometry
@@ -40,6 +42,10 @@ export default function OperationalRouteDialog({ route, open, onClose }: { route
           <strong>{route.originLabel}</strong> → <strong>{route.destinationLabel}</strong><br />
           {route.distanceKm.toLocaleString('pt-BR')} km · aproximadamente {route.estimatedMinutes.toLocaleString('pt-BR')} min
         </Alert>
+        {sameLocation && <Alert severity="warning">
+          A origem e o destino têm as mesmas coordenadas cadastradas. Por isso, a distância e o tempo são zero.
+          Confira os endereços da equipe e da ocorrência se deveriam estar em locais diferentes.
+        </Alert>}
         <Box ref={setMapElement} sx={{ width: '100%', height: { xs: 360, md: 500 }, minHeight: 360, borderRadius: 2, overflow: 'hidden', bgcolor: 'action.hover' }} />
         <Typography variant="caption" color="text.secondary">A rota é uma estimativa e pode mudar conforme bloqueios, trânsito e condições da via.</Typography>
       </Stack>}

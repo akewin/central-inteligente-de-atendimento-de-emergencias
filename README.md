@@ -224,6 +224,7 @@ Não versione arquivos `.env` com segredos reais.
 | --- | --- |
 | `VITE_API_BASE_URL` | URL-base da API |
 | `VITE_MAP_TILE_URL` | Provedor de tiles do Leaflet |
+| `VITE_MAP_TILE_ATTRIBUTION` | Créditos do provedor de mapas; por padrão, OpenStreetMap |
 
 ## Permissões
 
