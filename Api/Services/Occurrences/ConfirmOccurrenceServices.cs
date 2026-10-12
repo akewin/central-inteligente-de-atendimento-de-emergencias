@@ -79,9 +79,9 @@ public sealed class ConfirmOccurrenceServices
                 (int)HttpStatusCode.Unauthorized);
 
         await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
-        occurrence.PoliceConfirmed = selected.Contains(EmergencyServiceType.POLICIA);
+        occurrence.CivilGuardConfirmed = selected.Contains(EmergencyServiceType.GUARDA_CIVIL);
         occurrence.SamuConfirmed = selected.Contains(EmergencyServiceType.SAMU);
-        occurrence.FireDepartmentConfirmed = selected.Contains(EmergencyServiceType.BOMBEIROS);
+        occurrence.CivilDefenseConfirmed = selected.Contains(EmergencyServiceType.DEFESA_CIVIL);
         occurrence.ServicesConfirmedByUserId = user.Id;
         occurrence.ServicesConfirmedByUser = user;
         occurrence.ServicesConfirmedAt = DateTime.UtcNow;
@@ -113,8 +113,8 @@ public sealed class ConfirmOccurrenceServices
         Api.Models.Occurrence occurrence,
         IReadOnlySet<EmergencyServiceType> selected)
     {
-        return occurrence.PoliceConfirmed == selected.Contains(EmergencyServiceType.POLICIA) &&
+        return occurrence.CivilGuardConfirmed == selected.Contains(EmergencyServiceType.GUARDA_CIVIL) &&
                occurrence.SamuConfirmed == selected.Contains(EmergencyServiceType.SAMU) &&
-               occurrence.FireDepartmentConfirmed == selected.Contains(EmergencyServiceType.BOMBEIROS);
+               occurrence.CivilDefenseConfirmed == selected.Contains(EmergencyServiceType.DEFESA_CIVIL);
     }
 }

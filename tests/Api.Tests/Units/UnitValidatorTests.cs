@@ -24,11 +24,11 @@ public sealed class UnitValidatorTests
     }
 
     [Theory]
-    [InlineData(null, "POLICIA", "01001000", "SP", "DISPONIVEL")]
-    [InlineData("PM-01", "INVALIDO", "01001000", "SP", "DISPONIVEL")]
-    [InlineData("PM-01", "POLICIA", "123", "SP", "DISPONIVEL")]
-    [InlineData("PM-01", "POLICIA", "01001000", "S", "DISPONIVEL")]
-    [InlineData("PM-01", "POLICIA", "01001000", "SP", "INVALIDO")]
+    [InlineData(null, "GUARDA_CIVIL", "01001000", "SP", "DISPONIVEL")]
+    [InlineData("GC-01", "INVALIDO", "01001000", "SP", "DISPONIVEL")]
+    [InlineData("GC-01", "GUARDA_CIVIL", "123", "SP", "DISPONIVEL")]
+    [InlineData("GC-01", "GUARDA_CIVIL", "01001000", "S", "DISPONIVEL")]
+    [InlineData("GC-01", "GUARDA_CIVIL", "01001000", "SP", "INVALIDO")]
     public void Validate_WithInvalidInput_Throws(string? name, string service, string postalCode, string state, string status)
     {
         Assert.Throws<AppException>(() => _validator.Validate(new UnitCreateDto
@@ -43,7 +43,7 @@ public sealed class UnitValidatorTests
     {
         Assert.Throws<AppException>(() => _validator.Validate(new UnitUpdateDto
         {
-            Name = "PM-01", Service = "POLICIA", PostalCode = "01001000", Street = "Rua A", Number = "1",
+            Name = "GC-01", Service = "GUARDA_CIVIL", PostalCode = "01001000", Street = "Rua A", Number = "1",
             Neighborhood = "Centro", City = "São Paulo", State = "SP", Status = "DISPONIVEL"
         }, requireConcurrencyToken: true));
     }

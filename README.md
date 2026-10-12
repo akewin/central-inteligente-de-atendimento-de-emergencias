@@ -14,7 +14,7 @@ Plataforma full-stack para registrar, analisar e coordenar ocorrências de emerg
 - Confirmação humana da classificação e dos serviços indicados.
 - Máquina de estados: `ABERTA`, `EM_ANALISE`, `AGUARDANDO_CONFIRMACAO`, `DESPACHADA`, `EM_ATENDIMENTO`, `FINALIZADA` e `CANCELADA`.
 - Recomendação de equipes disponíveis por serviço, compatibilidade e distância.
-- Despacho de Polícia Militar (190), SAMU (192) e Corpo de Bombeiros (193).
+- Despacho de Guarda Civil (153), SAMU (192) e Defesa Civil (199).
 - Linha do tempo com mudanças de estado e histórico operacional.
 
 ### Operação das equipes
@@ -141,6 +141,13 @@ Para a execução recomendada, instale Docker e Docker Compose. Para executar di
    - Swagger: <http://localhost:5210/swagger>
 
 As migrations e os dados iniciais são aplicados automaticamente na inicialização da API.
+
+A migração `20261012120000_RenameEmergencyServices` converte os serviços antigos para
+`GUARDA_CIVIL` (153) e `DEFESA_CIVIL` (199), preservando seus IDs e vínculos. As equipes
+de exemplo passam de `PM-01/02` e `BM-01/02` para `GC-01/02` e `DC-01/02`, quando os
+nomes de destino estão livres. Publique API e interface juntas: os contratos passam
+a usar os novos códigos. As colunas históricas de confirmação e recomendação mantêm
+seus nomes físicos para preservar os dados, assim como os textos antigos de auditoria.
 
 ### Acesso inicial
 

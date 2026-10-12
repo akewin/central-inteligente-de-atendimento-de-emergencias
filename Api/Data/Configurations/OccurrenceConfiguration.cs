@@ -95,7 +95,7 @@ public class OccurrenceConfiguration : IEntityTypeConfiguration<Occurrence>
                .HasDefaultValue(OccurrenceStatus.ABERTA)
                .IsRequired();
 
-        builder.Property(o => o.PoliceConfirmed)
+        builder.Property(o => o.CivilGuardConfirmed)
                .HasColumnName("police_confirmed")
                .HasDefaultValue(false)
                .IsRequired();
@@ -105,7 +105,7 @@ public class OccurrenceConfiguration : IEntityTypeConfiguration<Occurrence>
                .HasDefaultValue(false)
                .IsRequired();
 
-        builder.Property(o => o.FireDepartmentConfirmed)
+        builder.Property(o => o.CivilDefenseConfirmed)
                .HasColumnName("fire_department_confirmed")
                .HasDefaultValue(false)
                .IsRequired();

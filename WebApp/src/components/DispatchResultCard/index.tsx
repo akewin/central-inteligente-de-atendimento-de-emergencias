@@ -1,3 +1,4 @@
+import { emergencyServiceLabel } from '../../helpers/emergencyServiceLabel';
 import { Alert, List, ListItem, ListItemText, Paper, Typography } from '@mui/material';
 import type { DispatchConfirmationRead } from '../../interfaces';
 
@@ -14,7 +15,7 @@ export default function DispatchResultCard({ result }: { result: DispatchConfirm
         {result.dispatches.map((dispatch) => (
           <ListItem key={dispatch.id} divider>
             <ListItemText
-              primary={`${dispatch.unitName} — ${dispatch.service}`}
+              primary={`${dispatch.unitName} — ${emergencyServiceLabel(dispatch.service)}`}
               secondary={`Dispatch #${dispatch.id} · ${dispatch.unitStatus}`}
             />
           </ListItem>

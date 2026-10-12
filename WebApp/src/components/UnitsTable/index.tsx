@@ -1,3 +1,4 @@
+import { emergencyServiceLabel } from '../../helpers/emergencyServiceLabel';
 import {
   Alert, Box, Chip, CircularProgress, IconButton, MenuItem, Paper, Stack,
   Table, TableBody, TableCell, TableContainer, TableHead, TablePagination,
@@ -35,7 +36,7 @@ export default function UnitsTable(props: Props) {
       <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} mb={2}>
         <TextField size="small" label="Buscar por nome" value={filters.search} onChange={(e) => props.onFiltersChange({ ...filters, search: e.target.value })} sx={{ flex: 1 }} />
         <TextField select size="small" label="Serviço" value={filters.emergencyService} onChange={(e) => props.onFiltersChange({ ...filters, emergencyService: e.target.value as UnitFilters['emergencyService'] })} sx={{ minWidth: 190 }}>
-          <MenuItem value="">Todos</MenuItem>{services.map((item) => <MenuItem key={item.id} value={item.type}>{item.type} — {item.emergencyNumber}</MenuItem>)}
+          <MenuItem value="">Todos</MenuItem>{services.map((item) => <MenuItem key={item.id} value={item.type}>{emergencyServiceLabel(item.type)} — {item.emergencyNumber}</MenuItem>)}
         </TextField>
         <TextField select size="small" label="Status" value={filters.status} onChange={(e) => props.onFiltersChange({ ...filters, status: e.target.value as UnitFilters['status'] })} sx={{ minWidth: 190 }}>
           <MenuItem value="">Todos</MenuItem>{statuses.map((item) => <MenuItem key={item} value={item}>{item.replaceAll('_', ' ')}</MenuItem>)}
@@ -51,7 +52,7 @@ export default function UnitsTable(props: Props) {
               : units.length === 0 ? <TableRow><TableCell colSpan={canManage ? 5 : 4}><NoResultsFound entity="equipe" /></TableCell></TableRow>
               : units.map((unit) => <TableRow key={unit.id} hover>
                 <TableCell sx={{ fontWeight: 600 }}>{unit.name}</TableCell>
-                <TableCell>{unit.service.type} ({unit.service.emergencyNumber})</TableCell>
+                <TableCell>{emergencyServiceLabel(unit.service.type)} ({unit.service.emergencyNumber})</TableCell>
                 <TableCell><Chip size="small" label={unit.status.replaceAll('_', ' ')} color={statusColor[unit.status]} /></TableCell>
                 <TableCell>{unit.address}</TableCell>
                 {canManage && <TableCell align="right"><IconButton aria-label={`Editar ${unit.name}`} onClick={() => props.onEdit(unit)}><Edit /></IconButton></TableCell>}

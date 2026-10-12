@@ -24,15 +24,15 @@ public sealed class RequestOccurrenceAnalysis
         type deve ser ACIDENTE_TRANSITO, INCENDIO, AGRESSAO, ROUBO, FERIMENTO, MAL_SUBITO,
         PESSOA_DESAPARECIDA, RESGATE ou OUTROS.
         priority deve ser BAIXA, MEDIA, ALTA ou CRITICA.
-        recommendedServices deve ser uma lista não vazia e sem duplicatas contendo somente POLICIA,
-        SAMU e/ou BOMBEIROS.
+        recommendedServices deve ser uma lista não vazia e sem duplicatas contendo somente GUARDA_CIVIL,
+        SAMU e/ou DEFESA_CIVIL.
         reason deve ser uma justificativa objetiva em português e não pode afirmar que a decisão foi
         confirmada ou que um despacho foi realizado.
         Retorne somente JSON compatível com o schema fornecido, sem markdown, comentários ou campos adicionais.
         """;
 
     private const string ResponseSchema = """
-        {"type":"object","additionalProperties":false,"required":["type","priority","recommendedServices","reason"],"properties":{"type":{"type":"string","enum":["ACIDENTE_TRANSITO","INCENDIO","AGRESSAO","ROUBO","FERIMENTO","MAL_SUBITO","PESSOA_DESAPARECIDA","RESGATE","OUTROS"]},"priority":{"type":"string","enum":["BAIXA","MEDIA","ALTA","CRITICA"]},"recommendedServices":{"type":"array","minItems":1,"maxItems":3,"items":{"type":"string","enum":["POLICIA","SAMU","BOMBEIROS"]}},"reason":{"type":"string","minLength":1,"maxLength":1000}}}
+        {"type":"object","additionalProperties":false,"required":["type","priority","recommendedServices","reason"],"properties":{"type":{"type":"string","enum":["ACIDENTE_TRANSITO","INCENDIO","AGRESSAO","ROUBO","FERIMENTO","MAL_SUBITO","PESSOA_DESAPARECIDA","RESGATE","OUTROS"]},"priority":{"type":"string","enum":["BAIXA","MEDIA","ALTA","CRITICA"]},"recommendedServices":{"type":"array","minItems":1,"maxItems":3,"items":{"type":"string","enum":["GUARDA_CIVIL","SAMU","DEFESA_CIVIL"]}},"reason":{"type":"string","minLength":1,"maxLength":1000}}}
         """;
 
     private readonly IOccurrenceRepository _occurrences;

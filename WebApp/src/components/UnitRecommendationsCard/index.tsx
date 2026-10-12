@@ -1,3 +1,4 @@
+import { emergencyServiceLabel } from '../../helpers/emergencyServiceLabel';
 import {
   Alert, Box, Button, Card, CardContent, Chip, CircularProgress, FormControlLabel,
   Paper, Radio, Stack, Typography,
@@ -50,7 +51,7 @@ export default function UnitRecommendationsCard({
               <CardContent>
                 <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" gap={1} mb={1.5}>
                   <Box>
-                    <Typography variant="h6">{group.service} — {group.emergencyNumber}</Typography>
+                    <Typography variant="h6">{emergencyServiceLabel(group.service)} — {group.emergencyNumber}</Typography>
                     <Typography variant="body2" color="text.secondary">{group.displayName}</Typography>
                   </Box>
                   <Chip label={`${group.units.length} disponível${group.units.length === 1 ? '' : 'is'}`} color={group.hasAvailableUnits ? 'success' : 'default'} />

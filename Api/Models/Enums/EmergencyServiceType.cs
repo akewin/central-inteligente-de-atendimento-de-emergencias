@@ -2,7 +2,7 @@ namespace Api.Models.Enums;
 
 public enum EmergencyServiceType
 {
-    POLICIA,
+    GUARDA_CIVIL,
     SAMU,
-    BOMBEIROS
+    DEFESA_CIVIL
 }

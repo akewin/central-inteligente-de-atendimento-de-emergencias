@@ -32,9 +32,9 @@ public class Occurrence : AuditableEntity
     public OccurrencePriority? ConfirmedPriority { get; set; }
     public OccurrenceStatus Status { get; set; } = OccurrenceStatus.ABERTA;
 
-    public bool PoliceConfirmed { get; set; }
+    public bool CivilGuardConfirmed { get; set; }
     public bool SamuConfirmed { get; set; }
-    public bool FireDepartmentConfirmed { get; set; }
+    public bool CivilDefenseConfirmed { get; set; }
     public int? ServicesConfirmedByUserId { get; set; }
     public User? ServicesConfirmedByUser { get; set; }
     public DateTime? ServicesConfirmedAt { get; set; }

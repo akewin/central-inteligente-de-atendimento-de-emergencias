@@ -8,9 +8,9 @@ public static class AIAnalysisMapper
     public static AIAnalysisReadDto ToReadDto(AIAnalysis analysis)
     {
         var services = new List<string>(3);
-        if (analysis.RecommendsPolice) services.Add("POLICIA");
+        if (analysis.RecommendsCivilGuard) services.Add("GUARDA_CIVIL");
         if (analysis.RecommendsSamu) services.Add("SAMU");
-        if (analysis.RecommendsFireDepartment) services.Add("BOMBEIROS");
+        if (analysis.RecommendsCivilDefense) services.Add("DEFESA_CIVIL");
 
         return new AIAnalysisReadDto
         {

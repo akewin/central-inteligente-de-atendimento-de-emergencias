@@ -6,7 +6,7 @@ namespace Api.Tests.AI;
 public sealed class FakeLlmClient : ILlmClient
 {
     public LlmResponse Response { get; set; } = new(
-        """{"type":"ACIDENTE_TRANSITO","priority":"ALTA","recommendedServices":["POLICIA","SAMU"],"reason":"Acidente simulado com possível vítima."}""",
+        """{"type":"ACIDENTE_TRANSITO","priority":"ALTA","recommendedServices":["GUARDA_CIVIL","SAMU"],"reason":"Acidente simulado com possível vítima."}""",
         "FakeProvider",
         "fake-model");
 

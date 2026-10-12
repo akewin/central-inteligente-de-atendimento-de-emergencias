@@ -218,7 +218,7 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         var analysis = await response.Content.ReadFromJsonAsync<AIAnalysisReadDto>();
         Assert.NotNull(analysis);
-        Assert.Equal(new[] { "POLICIA", "SAMU" }, analysis.RecommendedServices);
+        Assert.Equal(new[] { "GUARDA_CIVIL", "SAMU" }, analysis.RecommendedServices);
         Assert.Contains(marker, _llmClient.LastRequest?.Content);
         Assert.DoesNotContain("latitude", _llmClient.LastRequest?.Content ?? "", StringComparison.OrdinalIgnoreCase);
 
@@ -293,29 +293,29 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
 
         var response = await _client.PutAsJsonAsync(
             $"/api/occurrences/{occurrence.Id}/service-confirmation",
-            new { confirmedServices = new[] { "BOMBEIROS" } });
+            new { confirmedServices = new[] { "DEFESA_CIVIL" } });
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var confirmation = await response.Content
             .ReadFromJsonAsync<OccurrenceServiceConfirmationReadDto>();
         Assert.NotNull(confirmation);
-        Assert.Equal(new[] { "BOMBEIROS" }, confirmation.ConfirmedServices);
+        Assert.Equal(new[] { "DEFESA_CIVIL" }, confirmation.ConfirmedServices);
         Assert.Equal(_authorizedUser.Id, confirmation.ConfirmedBy.Id);
 
         await using var scope = _factory.Services.CreateAsyncScope();
         var context = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
         var persistedAnalysis = await context.AIAnalyses.AsNoTracking()
             .SingleAsync(a => a.Id == analysis.Id);
-        Assert.True(persistedAnalysis.RecommendsPolice);
+        Assert.True(persistedAnalysis.RecommendsCivilGuard);
         Assert.True(persistedAnalysis.RecommendsSamu);
-        Assert.False(persistedAnalysis.RecommendsFireDepartment);
+        Assert.False(persistedAnalysis.RecommendsCivilDefense);
 
         var persisted = await context.Occurrences.AsNoTracking()
             .SingleAsync(o => o.Id == occurrence.Id);
         Assert.Equal(OccurrenceStatus.AGUARDANDO_CONFIRMACAO, persisted.Status);
-        Assert.False(persisted.PoliceConfirmed);
+        Assert.False(persisted.CivilGuardConfirmed);
         Assert.False(persisted.SamuConfirmed);
-        Assert.True(persisted.FireDepartmentConfirmed);
+        Assert.True(persisted.CivilDefenseConfirmed);
         Assert.Equal(_authorizedUser.Id, persisted.ServicesConfirmedByUserId);
         Assert.NotNull(persisted.ServicesConfirmedAt);
         Assert.Null(persisted.ConfirmedType);
@@ -326,9 +326,9 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
 
         var details = await _client.GetFromJsonAsync<OccurrenceReadDto>(
             $"/api/occurrences/{occurrence.Id}");
-        Assert.Equal(new[] { "POLICIA", "SAMU" },
+        Assert.Equal(new[] { "GUARDA_CIVIL", "SAMU" },
             details?.LatestAIAnalysis?.RecommendedServices);
-        Assert.Equal(new[] { "BOMBEIROS" },
+        Assert.Equal(new[] { "DEFESA_CIVIL" },
             details?.ServiceConfirmation?.ConfirmedServices);
     }
 
@@ -338,7 +338,7 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
         Authorize(_authorizedUser, permissionId: 5);
         var occurrence = await CreateAsync("Confirmação idempotente");
         await RequestAnalysisAsync(occurrence.Id);
-        var payload = new { confirmedServices = new[] { "POLICIA", "SAMU" } };
+        var payload = new { confirmedServices = new[] { "GUARDA_CIVIL", "SAMU" } };
 
         var first = await _client.PutAsJsonAsync(
             $"/api/occurrences/{occurrence.Id}/service-confirmation", payload);
@@ -348,7 +348,7 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
         var repeatedBody = await repeated.Content.ReadFromJsonAsync<OccurrenceServiceConfirmationReadDto>();
         var conflict = await _client.PutAsJsonAsync(
             $"/api/occurrences/{occurrence.Id}/service-confirmation",
-            new { confirmedServices = new[] { "BOMBEIROS" } });
+            new { confirmedServices = new[] { "DEFESA_CIVIL" } });
 
         Assert.Equal(HttpStatusCode.OK, first.StatusCode);
         Assert.Equal(HttpStatusCode.OK, repeated.StatusCode);
@@ -404,7 +404,7 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
         await using (var scope = _factory.Services.CreateAsyncScope())
         {
             var context = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
-            var police = await context.EmergencyServices.SingleAsync(service => service.Type == EmergencyServiceType.POLICIA);
+            var police = await context.EmergencyServices.SingleAsync(service => service.Type == EmergencyServiceType.GUARDA_CIVIL);
             var samu = await context.EmergencyServices.SingleAsync(service => service.Type == EmergencyServiceType.SAMU);
             var occurrence = new Occurrence
             {
@@ -413,19 +413,19 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
                 Latitude = 10m,
                 Longitude = 10m,
                 Status = OccurrenceStatus.AGUARDANDO_CONFIRMACAO,
-                PoliceConfirmed = true,
+                CivilGuardConfirmed = true,
                 ServicesConfirmedAt = DateTime.UtcNow,
                 ServicesConfirmedByUserId = _authorizedUser.Id,
                 CreatedByUserId = _authorizedUser.Id
             };
             var availablePolice = new Unit
             {
-                Name = $"PM-NEAR-{Guid.NewGuid():N}", NormalizedName = $"PM-NEAR-{Guid.NewGuid():N}",
+                Name = $"GC-NEAR-{Guid.NewGuid():N}", NormalizedName = $"GC-NEAR-{Guid.NewGuid():N}",
                 EmergencyServiceId = police.Id, Latitude = 10m, Longitude = 10m, Status = UnitStatus.DISPONIVEL
             };
             var unavailablePolice = new Unit
             {
-                Name = $"PM-BUSY-{Guid.NewGuid():N}", NormalizedName = $"PM-BUSY-{Guid.NewGuid():N}",
+                Name = $"GC-BUSY-{Guid.NewGuid():N}", NormalizedName = $"GC-BUSY-{Guid.NewGuid():N}",
                 EmergencyServiceId = police.Id, Latitude = 10m, Longitude = 10m, Status = UnitStatus.EM_ATENDIMENTO
             };
             var unconfirmedSamu = new Unit
@@ -446,7 +446,7 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var recommendations = await response.Content.ReadFromJsonAsync<OccurrenceUnitRecommendationsDto>();
         var group = Assert.Single(recommendations!.Groups);
-        Assert.Equal("POLICIA", group.Service);
+        Assert.Equal("GUARDA_CIVIL", group.Service);
         Assert.Equal(availablePoliceId, group.Units.First().Id);
         Assert.Equal(0d, group.Units.First().DistanceKm);
         Assert.All(group.Units, unit => Assert.Equal("DISPONIVEL", unit.Status));
@@ -487,10 +487,10 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
         await using (var scope = _factory.Services.CreateAsyncScope())
         {
             var context = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
-            var police = await context.EmergencyServices.SingleAsync(item => item.Type == EmergencyServiceType.POLICIA);
+            var police = await context.EmergencyServices.SingleAsync(item => item.Type == EmergencyServiceType.GUARDA_CIVIL);
             var samu = await context.EmergencyServices.SingleAsync(item => item.Type == EmergencyServiceType.SAMU);
             var occurrence = CreateDispatchReadyOccurrence(police: true, samu: true);
-            var policeUnit = CreateAvailableUnit(police.Id, "PM-DISPATCH");
+            var policeUnit = CreateAvailableUnit(police.Id, "GC-DISPATCH");
             var samuUnit = CreateAvailableUnit(samu.Id, "SAMU-DISPATCH");
             context.AddRange(occurrence, policeUnit, samuUnit);
             await context.SaveChangesAsync();
@@ -539,10 +539,10 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
         await using (var scope = _factory.Services.CreateAsyncScope())
         {
             var context = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
-            var police = await context.EmergencyServices.SingleAsync(item => item.Type == EmergencyServiceType.POLICIA);
+            var police = await context.EmergencyServices.SingleAsync(item => item.Type == EmergencyServiceType.GUARDA_CIVIL);
             var samu = await context.EmergencyServices.SingleAsync(item => item.Type == EmergencyServiceType.SAMU);
             var occurrence = CreateDispatchReadyOccurrence(police: true, samu: true);
-            var available = CreateAvailableUnit(police.Id, "PM-ROLLBACK");
+            var available = CreateAvailableUnit(police.Id, "GC-ROLLBACK");
             var unavailable = CreateAvailableUnit(samu.Id, "SAMU-ROLLBACK");
             unavailable.Status = UnitStatus.EM_ATENDIMENTO;
             context.AddRange(occurrence, available, unavailable);
@@ -577,10 +577,10 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
         await using (var scope = _factory.Services.CreateAsyncScope())
         {
             var context = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
-            var police = await context.EmergencyServices.SingleAsync(item => item.Type == EmergencyServiceType.POLICIA);
+            var police = await context.EmergencyServices.SingleAsync(item => item.Type == EmergencyServiceType.GUARDA_CIVIL);
             var first = CreateDispatchReadyOccurrence(police: true);
             var second = CreateDispatchReadyOccurrence(police: true);
-            var unit = CreateAvailableUnit(police.Id, "PM-CONCURRENT");
+            var unit = CreateAvailableUnit(police.Id, "GC-CONCURRENT");
             context.AddRange(first, second, unit);
             await context.SaveChangesAsync();
             firstOccurrenceId = first.Id;
@@ -609,9 +609,9 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
             Latitude = -23.550520m,
             Longitude = -46.633308m,
             Status = OccurrenceStatus.AGUARDANDO_CONFIRMACAO,
-            PoliceConfirmed = police,
+            CivilGuardConfirmed = police,
             SamuConfirmed = samu,
-            FireDepartmentConfirmed = firefighters,
+            CivilDefenseConfirmed = firefighters,
             ServicesConfirmedByUserId = _authorizedUser.Id,
             ServicesConfirmedAt = DateTime.UtcNow,
             CreatedByUserId = _authorizedUser.Id
@@ -628,10 +628,10 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
         await using (var scope = _factory.Services.CreateAsyncScope())
         {
             var context = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
-            var police = await context.EmergencyServices.SingleAsync(item => item.Type == EmergencyServiceType.POLICIA);
+            var police = await context.EmergencyServices.SingleAsync(item => item.Type == EmergencyServiceType.GUARDA_CIVIL);
             var occurrence = CreateDispatchReadyOccurrence(police: true);
             occurrence.Status = OccurrenceStatus.DESPACHADA;
-            var unit = CreateAvailableUnit(police.Id, "PM-TRACK");
+            var unit = CreateAvailableUnit(police.Id, "GC-TRACK");
             unit.Status = UnitStatus.RESERVADA;
             var dispatch = new Dispatch { Occurrence = occurrence, Unit = unit, ConfirmedByUserId = _authorizedUser.Id, Status = DispatchStatus.ATRIBUIDO };
             context.AddRange(occurrence, unit, dispatch);
@@ -710,10 +710,10 @@ public sealed class OccurrencesApiTests : IAsyncLifetime
         await using (var scope = _factory.Services.CreateAsyncScope())
         {
             var context = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
-            var police = await context.EmergencyServices.SingleAsync(item => item.Type == EmergencyServiceType.POLICIA);
+            var police = await context.EmergencyServices.SingleAsync(item => item.Type == EmergencyServiceType.GUARDA_CIVIL);
             var occurrence = CreateDispatchReadyOccurrence(police: true);
             occurrence.Status = OccurrenceStatus.DESPACHADA;
-            var unit = CreateAvailableUnit(police.Id, "PM-STATUS-RACE");
+            var unit = CreateAvailableUnit(police.Id, "GC-STATUS-RACE");
             unit.Status = UnitStatus.DESLOCAMENTO;
             context.AddRange(occurrence, unit, new Dispatch { Occurrence = occurrence, Unit = unit, ConfirmedByUserId = _authorizedUser.Id });
             await context.SaveChangesAsync();

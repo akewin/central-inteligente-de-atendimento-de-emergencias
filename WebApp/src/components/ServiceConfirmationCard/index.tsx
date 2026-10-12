@@ -1,3 +1,4 @@
+import { emergencyServiceLabel } from '../../helpers/emergencyServiceLabel';
 import { useEffect, useState } from 'react';
 import {
   Alert,
@@ -19,7 +20,7 @@ import type { EmergencyServiceType, OccurrenceRead } from '../../interfaces';
 import { confirmOccurrenceServices } from '../../services';
 import { getErrorMessage } from '../../helpers';
 
-const services: EmergencyServiceType[] = ['POLICIA', 'SAMU', 'BOMBEIROS'];
+const services: EmergencyServiceType[] = ['GUARDA_CIVIL', 'SAMU', 'DEFESA_CIVIL'];
 
 export default function ServiceConfirmationCard({
   occurrence,
@@ -47,7 +48,7 @@ export default function ServiceConfirmationCard({
         </Alert>
         <Stack direction="row" gap={1} flexWrap="wrap" mb={2}>
           {confirmation.confirmedServices.map((service) => (
-            <Chip key={service} color="success" label={service} />
+            <Chip key={service} color="success" label={emergencyServiceLabel(service)} />
           ))}
         </Stack>
         <Typography>
@@ -103,7 +104,7 @@ export default function ServiceConfirmationCard({
                 onChange={() => toggleService(service)}
               />
             )}
-            label={service}
+            label={emergencyServiceLabel(service)}
           />
         ))}
       </Box>
@@ -124,7 +125,7 @@ export default function ServiceConfirmationCard({
           </Alert>
           <Typography gutterBottom>Órgãos selecionados:</Typography>
           <Stack direction="row" gap={1} flexWrap="wrap">
-            {selected.map((service) => <Chip key={service} label={service} />)}
+            {selected.map((service) => <Chip key={service} label={emergencyServiceLabel(service)} />)}
           </Stack>
         </DialogContent>
         <DialogActions>

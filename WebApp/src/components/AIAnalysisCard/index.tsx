@@ -1,3 +1,4 @@
+import { emergencyServiceLabel } from '../../helpers/emergencyServiceLabel';
 import { Alert, Box, Chip, Paper, Stack, Typography } from '@mui/material';
 import type { AIAnalysisRead } from '../../interfaces';
 
@@ -16,7 +17,7 @@ export default function AIAnalysisCard({ analysis }: { analysis: AIAnalysisRead 
         <Typography fontWeight={600}>Órgãos recomendados</Typography>
         <Stack direction="row" gap={1} flexWrap="wrap">
           {analysis.recommendedServices.map((service) => (
-            <Chip key={service} size="small" label={service} />
+            <Chip key={service} size="small" label={emergencyServiceLabel(service)} />
           ))}
         </Stack>
         <Typography fontWeight={600}>Justificativa</Typography>

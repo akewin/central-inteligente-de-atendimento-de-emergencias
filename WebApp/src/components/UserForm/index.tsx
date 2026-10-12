@@ -1,3 +1,4 @@
+import { emergencyServiceLabel } from '../../helpers/emergencyServiceLabel';
 import { useState, useEffect } from "react";
 import { Box, TextField, Button, FormHelperText, MenuItem, Paper } from "@mui/material";
 import type { Hospital, UserFormValues, UserRead } from "../../interfaces";
@@ -123,7 +124,7 @@ export default function UserForm({ onSubmit, user }: Props) {
         helperText="Ao vincular uma equipe, a permissão operacional é concedida automaticamente."
       >
         <MenuItem value="">Sem equipe (usuário administrativo)</MenuItem>
-        {unitOptions.map((unit) => <MenuItem key={unit.id} value={unit.id}>{unit.name} — {unit.service}</MenuItem>)}
+        {unitOptions.map((unit) => <MenuItem key={unit.id} value={unit.id}>{unit.name} — {emergencyServiceLabel(unit.service)}</MenuItem>)}
       </TextField>
 
       <TextField select fullWidth label="Hospital (opcional)" value={form.hospitalId ?? ''}

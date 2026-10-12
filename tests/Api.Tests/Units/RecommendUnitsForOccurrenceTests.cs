@@ -14,13 +14,13 @@ public sealed class RecommendUnitsForOccurrenceTests
     public async Task Execute_FiltersUnavailableAndUnconfirmedServices_AndOrdersDeterministically()
     {
         var occurrence = ConfirmedOccurrence(police: true);
-        var police = Service(1, EmergencyServiceType.POLICIA, "190");
+        var police = Service(1, EmergencyServiceType.GUARDA_CIVIL, "153");
         var samu = Service(2, EmergencyServiceType.SAMU, "192");
         var units = new List<Unit>
         {
-            Unit(3, "PM-B", police, 0m, 0m),
-            Unit(2, "PM-A", police, 0m, 0m),
-            Unit(1, "PM-Z", police, 0m, 0m, UnitStatus.INDISPONIVEL),
+            Unit(3, "GC-B", police, 0m, 0m),
+            Unit(2, "GC-A", police, 0m, 0m),
+            Unit(1, "GC-Z", police, 0m, 0m, UnitStatus.INDISPONIVEL),
             Unit(4, "SAMU-01", samu, 0m, 0m)
         };
         var service = CreateService(occurrence, [police], units);
@@ -28,8 +28,8 @@ public sealed class RecommendUnitsForOccurrenceTests
         var result = await service.ExecuteAsync(occurrence.Id, 10);
 
         var group = Assert.Single(result.Groups);
-        Assert.Equal("POLICIA", group.Service);
-        Assert.Equal(new[] { "PM-A", "PM-B" }, group.Units.Select(unit => unit.Name));
+        Assert.Equal("GUARDA_CIVIL", group.Service);
+        Assert.Equal(new[] { "GC-A", "GC-B" }, group.Units.Select(unit => unit.Name));
         Assert.All(group.Units, unit => Assert.Equal("DISPONIVEL", unit.Status));
     }
 
@@ -37,17 +37,17 @@ public sealed class RecommendUnitsForOccurrenceTests
     public async Task Execute_AppliesLimitPerServiceAndReturnsEmptyConfirmedGroup()
     {
         var occurrence = ConfirmedOccurrence(police: true, samu: true);
-        var police = Service(1, EmergencyServiceType.POLICIA, "190");
+        var police = Service(1, EmergencyServiceType.GUARDA_CIVIL, "153");
         var samu = Service(2, EmergencyServiceType.SAMU, "192");
         var service = CreateService(occurrence, [police, samu],
         [
-            Unit(1, "PM-01", police, 0m, 0.01m),
-            Unit(2, "PM-02", police, 0m, 0.02m)
+            Unit(1, "GC-01", police, 0m, 0.01m),
+            Unit(2, "GC-02", police, 0m, 0.02m)
         ]);
 
         var result = await service.ExecuteAsync(occurrence.Id, 1);
 
-        Assert.Single(result.Groups.Single(group => group.Service == "POLICIA").Units);
+        Assert.Single(result.Groups.Single(group => group.Service == "GUARDA_CIVIL").Units);
         Assert.Empty(result.Groups.Single(group => group.Service == "SAMU").Units);
     }
 
@@ -55,8 +55,8 @@ public sealed class RecommendUnitsForOccurrenceTests
     public async Task Execute_DoesNotMutateOccurrenceOrUnits()
     {
         var occurrence = ConfirmedOccurrence(police: true);
-        var police = Service(1, EmergencyServiceType.POLICIA, "190");
-        var unit = Unit(1, "PM-01", police, 0m, 0m);
+        var police = Service(1, EmergencyServiceType.GUARDA_CIVIL, "153");
+        var unit = Unit(1, "GC-01", police, 0m, 0m);
         var originalStatus = unit.Status;
         var originalOccurrenceUpdatedAt = occurrence.UpdatedAt;
 
@@ -85,7 +85,7 @@ public sealed class RecommendUnitsForOccurrenceTests
     private static Occurrence ConfirmedOccurrence(bool police = false, bool samu = false) => new()
     {
         Id = 10, Latitude = 0m, Longitude = 0m, Description = "Teste", LocationDescription = "Teste",
-        Status = OccurrenceStatus.AGUARDANDO_CONFIRMACAO, PoliceConfirmed = police, SamuConfirmed = samu,
+        Status = OccurrenceStatus.AGUARDANDO_CONFIRMACAO, CivilGuardConfirmed = police, SamuConfirmed = samu,
         ServicesConfirmedAt = DateTime.UtcNow, ServicesConfirmedByUserId = 1, UpdatedAt = DateTime.UtcNow
     };
 

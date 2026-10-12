@@ -10,14 +10,14 @@ public sealed class AIAnalysisValidatorTests
     [Fact]
     public void ValidateAndCreate_WithValidResponse_ReturnsValidatedEntity()
     {
-        var response = Response("""{"type":"INCENDIO","priority":"CRITICA","recommendedServices":["BOMBEIROS","SAMU"],"reason":" Incêndio com risco às pessoas. "}""");
+        var response = Response("""{"type":"INCENDIO","priority":"CRITICA","recommendedServices":["DEFESA_CIVIL","SAMU"],"reason":" Incêndio com risco às pessoas. "}""");
 
         var analysis = _validator.ValidateAndCreate(response, 42);
 
         Assert.Equal(42, analysis.OccurrenceId);
-        Assert.True(analysis.RecommendsFireDepartment);
+        Assert.True(analysis.RecommendsCivilDefense);
         Assert.True(analysis.RecommendsSamu);
-        Assert.False(analysis.RecommendsPolice);
+        Assert.False(analysis.RecommendsCivilGuard);
         Assert.Equal("Incêndio com risco às pessoas.", analysis.Reason);
     }
 
@@ -45,7 +45,7 @@ public sealed class AIAnalysisValidatorTests
         string? model)
     {
         var response = new LlmResponse(
-            """{"type":"OUTROS","priority":"BAIXA","recommendedServices":["POLICIA"],"reason":"Motivo"}""",
+            """{"type":"OUTROS","priority":"BAIXA","recommendedServices":["GUARDA_CIVIL"],"reason":"Motivo"}""",
             provider,
             model);
 

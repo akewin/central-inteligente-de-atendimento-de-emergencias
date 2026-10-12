@@ -1,3 +1,4 @@
+import { emergencyServiceLabel } from '../../helpers/emergencyServiceLabel';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, Badge, Box, Button, Card, CardActions, CardContent, Chip, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
@@ -88,7 +89,7 @@ export default function MyDispatches() {
         <CardContent><Stack direction="row" justifyContent="space-between" gap={1}><Typography variant="h6">Ocorrência #{item.occurrenceId}</Typography><Stack direction="row" gap={1} alignItems="center"><Chip color={item.status === 'ATRIBUIDO' ? 'warning' : 'primary'} label={item.status.replaceAll('_', ' ')} />{item.status !== 'ATRIBUIDO' && item.status !== 'CONCLUIDO' && item.status !== 'CANCELADO' && <Button size="small" variant="outlined" startIcon={<RouteIcon />} disabled={busy === item.id} onClick={() => void showRoute(item)}>Ver rota</Button>}</Stack></Stack>
           <Typography fontWeight={600} mt={1}>{item.priority?.replaceAll('_', ' ') ?? 'Prioridade não informada'} · {item.type?.replaceAll('_', ' ') ?? 'Tipo não informado'}</Typography>
           <Typography mt={1}>{item.description}</Typography><Typography color="text.secondary" mt={1}>{item.address}</Typography>
-          <Typography variant="body2" mt={1}>Serviços: {item.services.join(', ')}</Typography>
+          <Typography variant="body2" mt={1}>Serviços: {item.services.map(emergencyServiceLabel).join(', ')}</Typography>
         </CardContent>
         {nextStatus[item.status] && <CardActions sx={{ flexWrap: 'wrap' }}><Button disabled={busy === item.id} variant="contained" onClick={() => void transition(item, nextStatus[item.status]!.status)}>{busy === item.id ? 'Registrando...' : nextStatus[item.status]!.label}</Button>
           {['NO_LOCAL', 'EM_ATENDIMENTO'].includes(item.status) && !item.transport && <Button onClick={() => void transportAction(item, 'request')}>Solicitar encaminhamento</Button>}

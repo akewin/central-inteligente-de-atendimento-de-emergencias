@@ -71,9 +71,9 @@ public static class DbInitializer
     {
         var definitions = new[]
         {
-            new EmergencyService { Type = EmergencyServiceType.POLICIA, EmergencyNumber = "190", DisplayName = "Polícia Militar" },
+            new EmergencyService { Type = EmergencyServiceType.GUARDA_CIVIL, EmergencyNumber = "153", DisplayName = "Guarda Civil" },
             new EmergencyService { Type = EmergencyServiceType.SAMU, EmergencyNumber = "192", DisplayName = "Serviço de Atendimento Móvel de Urgência" },
-            new EmergencyService { Type = EmergencyServiceType.BOMBEIROS, EmergencyNumber = "193", DisplayName = "Corpo de Bombeiros" }
+            new EmergencyService { Type = EmergencyServiceType.DEFESA_CIVIL, EmergencyNumber = "199", DisplayName = "Defesa Civil" }
         };
 
         var existingTypes = await context.EmergencyServices.Select(service => service.Type).ToListAsync();
@@ -93,12 +93,12 @@ public static class DbInitializer
         var services = await context.EmergencyServices.ToDictionaryAsync(service => service.Type);
         var definitions = new[]
         {
-            ("PM-01", EmergencyServiceType.POLICIA, -23.550520m, -46.633308m),
-            ("PM-02", EmergencyServiceType.POLICIA, -23.561414m, -46.655881m),
+            ("GC-01", EmergencyServiceType.GUARDA_CIVIL, -23.550520m, -46.633308m),
+            ("GC-02", EmergencyServiceType.GUARDA_CIVIL, -23.561414m, -46.655881m),
             ("SAMU-01", EmergencyServiceType.SAMU, -23.557790m, -46.639557m),
             ("SAMU-02", EmergencyServiceType.SAMU, -23.574300m, -46.623100m),
-            ("BM-01", EmergencyServiceType.BOMBEIROS, -23.543100m, -46.642500m),
-            ("BM-02", EmergencyServiceType.BOMBEIROS, -23.568900m, -46.649200m)
+            ("DC-01", EmergencyServiceType.DEFESA_CIVIL, -23.543100m, -46.642500m),
+            ("DC-02", EmergencyServiceType.DEFESA_CIVIL, -23.568900m, -46.649200m)
         };
 
         var existingNames = await context.Units.Select(unit => unit.NormalizedName).ToListAsync();

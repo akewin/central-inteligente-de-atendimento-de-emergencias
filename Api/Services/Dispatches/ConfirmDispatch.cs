@@ -217,9 +217,9 @@ public sealed class ConfirmDispatch
     private static IReadOnlySet<EmergencyServiceType> GetConfirmedServices(Occurrence occurrence)
     {
         var services = new HashSet<EmergencyServiceType>();
-        if (occurrence.PoliceConfirmed) services.Add(EmergencyServiceType.POLICIA);
+        if (occurrence.CivilGuardConfirmed) services.Add(EmergencyServiceType.GUARDA_CIVIL);
         if (occurrence.SamuConfirmed) services.Add(EmergencyServiceType.SAMU);
-        if (occurrence.FireDepartmentConfirmed) services.Add(EmergencyServiceType.BOMBEIROS);
+        if (occurrence.CivilDefenseConfirmed) services.Add(EmergencyServiceType.DEFESA_CIVIL);
         return services;
     }
 }

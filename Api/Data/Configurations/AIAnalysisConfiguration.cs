@@ -25,9 +25,9 @@ public sealed class AIAnalysisConfiguration : IEntityTypeConfiguration<AIAnalysi
             .HasConversion<string>().HasMaxLength(30).IsRequired();
         builder.Property(a => a.RecommendedPriority).HasColumnName("recommended_priority")
             .HasConversion<string>().HasMaxLength(10).IsRequired();
-        builder.Property(a => a.RecommendsPolice).HasColumnName("recommends_police").IsRequired();
+        builder.Property(a => a.RecommendsCivilGuard).HasColumnName("recommends_police").IsRequired();
         builder.Property(a => a.RecommendsSamu).HasColumnName("recommends_samu").IsRequired();
-        builder.Property(a => a.RecommendsFireDepartment).HasColumnName("recommends_fire_department").IsRequired();
+        builder.Property(a => a.RecommendsCivilDefense).HasColumnName("recommends_fire_department").IsRequired();
         builder.Property(a => a.Reason).HasColumnName("reason").HasMaxLength(1000).IsRequired();
         builder.Property(a => a.Provider).HasColumnName("provider").HasMaxLength(50).IsRequired();
         builder.Property(a => a.Model).HasColumnName("model").HasMaxLength(100).IsRequired();

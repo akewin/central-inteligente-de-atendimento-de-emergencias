@@ -1,6 +1,6 @@
 import type { PagedResponse } from '../PagedResponse';
 
-export type EmergencyServiceType = 'POLICIA' | 'SAMU' | 'BOMBEIROS';
+export type EmergencyServiceType = 'GUARDA_CIVIL' | 'SAMU' | 'DEFESA_CIVIL';
 export type UnitStatus = 'DISPONIVEL' | 'RESERVADA' | 'DESLOCAMENTO' | 'EM_ATENDIMENTO' | 'INDISPONIVEL';
 
 export interface EmergencyService {

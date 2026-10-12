@@ -20,7 +20,7 @@ export type OccurrenceType =
 
 export type OccurrencePriority = 'BAIXA' | 'MEDIA' | 'ALTA' | 'CRITICA';
 
-export type EmergencyServiceType = 'POLICIA' | 'SAMU' | 'BOMBEIROS';
+export type EmergencyServiceType = 'GUARDA_CIVIL' | 'SAMU' | 'DEFESA_CIVIL';
 
 export interface AIAnalysisRead {
   id: number;

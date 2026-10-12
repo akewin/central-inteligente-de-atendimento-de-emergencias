@@ -19,7 +19,7 @@ public sealed class UnitValidator
 
         if (!Enum.TryParse<EmergencyServiceType>(dto.Service?.Trim(), true, out var service) ||
             !Enum.IsDefined(service))
-            throw new AppException("Serviço inválido. Use POLICIA, SAMU ou BOMBEIROS.");
+            throw new AppException("Serviço inválido. Use GUARDA_CIVIL, SAMU ou DEFESA_CIVIL.");
 
         if (!Enum.TryParse<UnitStatus>(dto.Status?.Trim(), true, out var status) ||
             !Enum.IsDefined(status))

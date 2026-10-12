@@ -10,13 +10,13 @@ public sealed class EmergencyServiceConfiguration : IEntityTypeConfiguration<Eme
     {
         builder.ToTable("emergency_services", table =>
         {
-            table.HasCheckConstraint("ck_emergency_services_type", "type IN ('POLICIA', 'SAMU', 'BOMBEIROS')");
-            table.HasCheckConstraint("ck_emergency_services_number", "emergency_number IN ('190', '192', '193')");
+            table.HasCheckConstraint("ck_emergency_services_type", "type IN ('GUARDA_CIVIL', 'SAMU', 'DEFESA_CIVIL')");
+            table.HasCheckConstraint("ck_emergency_services_number", "emergency_number IN ('153', '192', '199')");
             table.HasCheckConstraint(
                 "ck_emergency_services_mapping",
-                "(type = 'POLICIA' AND emergency_number = '190') OR " +
+                "(type = 'GUARDA_CIVIL' AND emergency_number = '153') OR " +
                 "(type = 'SAMU' AND emergency_number = '192') OR " +
-                "(type = 'BOMBEIROS' AND emergency_number = '193')");
+                "(type = 'DEFESA_CIVIL' AND emergency_number = '199')");
         });
 
         builder.HasKey(service => service.Id);

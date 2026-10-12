@@ -45,9 +45,9 @@ public static class OperationalDispatchMapper
     private static IReadOnlyList<string> GetServices(Occurrence occurrence)
     {
         var services = new List<string>(3);
-        if (occurrence.PoliceConfirmed) services.Add("POLICIA");
+        if (occurrence.CivilGuardConfirmed) services.Add("GUARDA_CIVIL");
         if (occurrence.SamuConfirmed) services.Add("SAMU");
-        if (occurrence.FireDepartmentConfirmed) services.Add("BOMBEIROS");
+        if (occurrence.CivilDefenseConfirmed) services.Add("DEFESA_CIVIL");
         return services;
     }
 }

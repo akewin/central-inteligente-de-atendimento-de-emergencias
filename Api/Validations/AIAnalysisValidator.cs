@@ -11,7 +11,7 @@ namespace Api.Validations;
 public sealed class AIAnalysisValidator
 {
     private static readonly HashSet<string> AllowedServices =
-        new(StringComparer.Ordinal) { "POLICIA", "SAMU", "BOMBEIROS" };
+        new(StringComparer.Ordinal) { "GUARDA_CIVIL", "SAMU", "DEFESA_CIVIL" };
 
     public AIAnalysis ValidateAndCreate(LlmResponse response, int occurrenceId)
     {
@@ -60,9 +60,9 @@ public sealed class AIAnalysisValidator
             OccurrenceId = occurrenceId,
             RecommendedType = type,
             RecommendedPriority = priority,
-            RecommendsPolice = uniqueServices.Contains("POLICIA"),
+            RecommendsCivilGuard = uniqueServices.Contains("GUARDA_CIVIL"),
             RecommendsSamu = uniqueServices.Contains("SAMU"),
-            RecommendsFireDepartment = uniqueServices.Contains("BOMBEIROS"),
+            RecommendsCivilDefense = uniqueServices.Contains("DEFESA_CIVIL"),
             Reason = reason,
             Provider = provider,
             Model = model

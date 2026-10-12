@@ -13,12 +13,12 @@ public sealed class OccurrenceServiceConfirmationValidatorTests
     {
         var result = _validator.Validate(new OccurrenceServiceConfirmationRequestDto
         {
-            ConfirmedServices = ["POLICIA", "BOMBEIROS"]
+            ConfirmedServices = ["GUARDA_CIVIL", "DEFESA_CIVIL"]
         });
 
         Assert.Equal(2, result.Count);
-        Assert.Contains(EmergencyServiceType.POLICIA, result);
-        Assert.Contains(EmergencyServiceType.BOMBEIROS, result);
+        Assert.Contains(EmergencyServiceType.GUARDA_CIVIL, result);
+        Assert.Contains(EmergencyServiceType.DEFESA_CIVIL, result);
     }
 
     [Theory]

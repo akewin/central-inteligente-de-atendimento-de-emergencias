@@ -1,3 +1,4 @@
+import { emergencyServiceLabel } from '../../helpers/emergencyServiceLabel';
 import { useEffect, useState } from 'react';
 import {
   Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid,
@@ -18,7 +19,7 @@ interface Props {
 
 export default function UnitForm({ open, unit, services, saving, onClose, onSubmit }: Props) {
   const [name, setName] = useState('');
-  const [service, setService] = useState<UnitPayload['service']>('POLICIA');
+  const [service, setService] = useState<UnitPayload['service']>('GUARDA_CIVIL');
   const [postalCode, setPostalCode] = useState('');
   const [street, setStreet] = useState('');
   const [number, setNumber] = useState('');
@@ -33,7 +34,7 @@ export default function UnitForm({ open, unit, services, saving, onClose, onSubm
 
   useEffect(() => {
     setName(unit?.name ?? '');
-    setService(unit?.service.type ?? services[0]?.type ?? 'POLICIA');
+    setService(unit?.service.type ?? services[0]?.type ?? 'GUARDA_CIVIL');
     setPostalCode(unit?.postalCode ?? ''); setStreet(unit?.street ?? ''); setNumber(unit?.number ?? '');
     setComplement(unit?.complement ?? ''); setNeighborhood(unit?.neighborhood ?? ''); setCity(unit?.city ?? '');
     setState(unit?.state ?? 'SP'); setReference(unit?.reference ?? '');
@@ -67,7 +68,7 @@ export default function UnitForm({ open, unit, services, saving, onClose, onSubm
       <DialogContent>
         <Grid container spacing={2} sx={{ mt: 0.5 }}>
           <Grid size={{ xs: 12 }}><TextField fullWidth label="Nome" value={name} onChange={(e) => setName(e.target.value)} error={!!validation && name.trim().length < 2} /></Grid>
-          <Grid size={{ xs: 12 }}><TextField select fullWidth label="Serviço" value={service} onChange={(e) => setService(e.target.value as UnitPayload['service'])}>{services.map((item) => <MenuItem key={item.id} value={item.type}>{item.type} — {item.emergencyNumber}</MenuItem>)}</TextField></Grid>
+          <Grid size={{ xs: 12 }}><TextField select fullWidth label="Serviço" value={service} onChange={(e) => setService(e.target.value as UnitPayload['service'])}>{services.map((item) => <MenuItem key={item.id} value={item.type}>{emergencyServiceLabel(item.type)} — {item.emergencyNumber}</MenuItem>)}</TextField></Grid>
           <Grid size={{ xs: 12, sm: 4 }}><TextField fullWidth required label="CEP" value={postalCode}
             onChange={(e) => { const digits = e.target.value.replace(/\D/g, '').slice(0, 8); setPostalCode(digits.length > 5 ? `${digits.slice(0, 5)}-${digits.slice(5)}` : digits); }}
             onBlur={() => void handlePostalCodeLookup()} placeholder="00000-000" disabled={postalCodeLoading}

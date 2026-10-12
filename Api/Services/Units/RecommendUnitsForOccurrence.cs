@@ -128,12 +128,12 @@ public sealed class RecommendUnitsForOccurrence
     private static List<EmergencyServiceType> GetConfirmedServices(Occurrence occurrence)
     {
         var services = new List<EmergencyServiceType>(3);
-        if (occurrence.PoliceConfirmed) services.Add(EmergencyServiceType.POLICIA);
+        if (occurrence.CivilGuardConfirmed) services.Add(EmergencyServiceType.GUARDA_CIVIL);
         if (occurrence.SamuConfirmed) services.Add(EmergencyServiceType.SAMU);
-        if (occurrence.FireDepartmentConfirmed) services.Add(EmergencyServiceType.BOMBEIROS);
+        if (occurrence.CivilDefenseConfirmed) services.Add(EmergencyServiceType.DEFESA_CIVIL);
         return services;
     }
 
     private static readonly EmergencyServiceType[] ConfirmedServiceOrder =
-        [EmergencyServiceType.POLICIA, EmergencyServiceType.SAMU, EmergencyServiceType.BOMBEIROS];
+        [EmergencyServiceType.GUARDA_CIVIL, EmergencyServiceType.SAMU, EmergencyServiceType.DEFESA_CIVIL];
 }
