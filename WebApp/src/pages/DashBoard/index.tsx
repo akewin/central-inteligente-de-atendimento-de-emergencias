@@ -1,6 +1,5 @@
 import { Box, CircularProgress, Container } from '@mui/material';
 import {
-  DashboardDevelopmentTips,
   PageTitle,
   StatsCard,
 } from '../../components';
@@ -67,7 +66,6 @@ export default function DashBoard() {
         </Box>
       )}
 
-      <DashboardDevelopmentTips />
     </Container>
   );
 }

@@ -14,7 +14,14 @@ export default function Hospitals() {
   const load = async () => { try { setItems(await listHospitals(true)); setError(''); } catch (e) { setError(getErrorMessage(e)); } };
   useEffect(() => { void load(); }, []);
   const show = (hospital?: Hospital) => { setEditing(hospital ?? null); setForm(hospital ? { ...hospital, expectedUpdatedAt: hospital.updatedAt } : empty); setPostalCodeMessage(null); setOpen(true); };
-  const save = async () => { try { editing ? await updateHospital(editing.id, form) : await createHospital(form); setOpen(false); await load(); } catch (e) { setError(getErrorMessage(e)); } };
+  const save = async () => {
+    try {
+      if (editing) await updateHospital(editing.id, form);
+      else await createHospital(form);
+      setOpen(false);
+      await load();
+    } catch (e) { setError(getErrorMessage(e)); }
+  };
   const addWard = async (hospital: Hospital) => { const name = window.prompt('Nome da nova ala:'); if (!name) return; const total = Number(window.prompt('Quantidade total de vagas:', '10')); if (!Number.isInteger(total) || total < 0) return; await createHospitalWard(hospital.id, { name, totalBeds: total, occupiedBeds: 0, active: true }); await load(); };
   const editWard = async (hospital: Hospital, ward: HospitalWard) => { const occupied = Number(window.prompt(`Vagas ocupadas em ${ward.name}:`, String(ward.occupiedBeds))); if (!Number.isInteger(occupied)) return; try { await updateHospitalWard(hospital.id, { ...ward, occupiedBeds: occupied }); await load(); } catch (e) { setError(getErrorMessage(e)); } };
   const set = (key: keyof HospitalPayload, value: unknown) => setForm(current => ({ ...current, [key]: value }));

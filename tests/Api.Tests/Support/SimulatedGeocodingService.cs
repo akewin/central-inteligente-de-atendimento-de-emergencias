@@ -1,12 +1,13 @@
 using System.Security.Cryptography;
 using System.Text;
 using Api.Geography;
+using Api.Services.Geography;
 
-namespace Api.Services.Geography;
+namespace Api.Tests.Support;
 
 /// <summary>
 /// Produz coordenadas estáveis dentro da área simulada de São Paulo.
-/// Não representa uma geocodificação real e deve ser substituído por um adaptador externo no futuro.
+/// Exclusivo dos testes: não realiza chamadas externas nem representa uma geocodificação real.
 /// </summary>
 public sealed class SimulatedGeocodingService : IGeocodingService
 {

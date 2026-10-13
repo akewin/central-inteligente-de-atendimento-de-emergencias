@@ -31,7 +31,6 @@ export {
   getOccurrenceTimeline,
   transitionOccurrenceStatus,
   getOccurrenceMap,
-  confirmOccurrenceHospital,
   getOccurrenceTransport,
   assignSamuToTransport,
 } from './occurrencesServices/occurrencesServices';

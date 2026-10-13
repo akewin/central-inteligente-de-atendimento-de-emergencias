@@ -109,8 +109,3 @@ export async function getOccurrenceTransport(id: number) {
 export async function assignSamuToTransport(id: number, unitId: number) {
   return (await api.post<PatientTransport>(`/occurrences/${id}/transport/samu`, { unitId })).data;
 }
-
-export async function confirmOccurrenceHospital(id: number, hospitalId: number) {
-  const { data } = await api.put(`/occurrences/${id}/hospital`, { hospitalId });
-  return data;
-}

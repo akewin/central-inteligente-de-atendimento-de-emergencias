@@ -58,14 +58,3 @@ export function canEditPermissions(
 
   return false;
 }
-
-export function filterAssignablePermissions(
-  authUser: AuthUser,
-  allPermissions: SystemResource[]
-): SystemResource[] {
-  if (isRootUser(authUser)) return allPermissions;
-  const isUserTeam = getUserPermissions(authUser).has(PERMISSIONS.USERS);
-  if (isUserTeam)
-    return allPermissions.filter((p) => p.name !== PERMISSIONS.ROOT);
-  return [];
-}

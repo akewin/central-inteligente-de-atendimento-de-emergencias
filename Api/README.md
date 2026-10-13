@@ -1,8 +1,8 @@
-# Admin Pannel BoilerPlate Backend - PostgreSQL + .NET
+# API da Central Inteligente de Atendimento de Emergências
 
 > Api com fluxo completo de autenticação **JWT**, implementado em **PostgreSQL + .NET**.  
 > Inclui **hash seguro de senhas (BCrypt)**, **emissão e validação de tokens JWT**, **controle customizável de permissões de acesso**,
-> **logs de sistema integrados** e um **repositório genérico** que permite criar CRUDs rapidamente apenas injetando DTOs específicos.
+> **logs de sistema integrados** e serviços de ocorrências, equipes, hospitais e transporte.
 
 ---
 

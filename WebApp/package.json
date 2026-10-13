@@ -19,7 +19,6 @@
     "@mui/icons-material": "^7.3.4",
     "@mui/material": "^7.3.4",
     "@mui/x-date-pickers": "^8.16.0",
-    "@mui/x-date-pickers-pro": "^8.16.0",
     "axios": "^1.12.2",
     "date-fns": "^4.1.0",
     "leaflet": "^1.9.4",

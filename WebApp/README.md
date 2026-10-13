@@ -1,4 +1,4 @@
-# Admin Pannel BoilerPlate Frontend - React + Vite + MaterialUI
+# Interface da Central Inteligente de Atendimento de Emergências
 
 > Frontend em **React** com **Vite** e **TypeScript**, integrado com a API .NET deste projeto.  
 > Fornece um painel administrativo moderno, seguro e escalável, permitindo gerenciamento de **usuários com controle de permissões de acesso** e também o gerenciamento de **recursos do sistema**, além de permitir **auditoria** das ações executadas.
@@ -8,7 +8,7 @@
 
 ## Tecnologias Utilizadas
 
-- [**React 18**](https://reactjs.org/): Biblioteca para criação de interfaces declarativas e reativas.
+- [**React 19**](https://reactjs.org/): Biblioteca para criação de interfaces declarativas e reativas.
 - [**Vite**](https://vitejs.dev/): Bundler moderno e rápido para desenvolvimento frontend.
 - [**TypeScript**](https://www.typescriptlang.org/): Superset de JavaScript que adiciona tipagem estática.
 - [**MaterialUI (MUI)**](https://mui.com/): Biblioteca de componentes para React com design consistente e responsivo.
