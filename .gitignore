@@ -30,3 +30,5 @@
 *.log
 logs/
 coverage/
+
+.local/
